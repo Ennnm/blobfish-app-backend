@@ -4,7 +4,9 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.mjs",
+    "watch": "nodemon index.mjs"
   },
   "repository": {
     "type": "git",
@@ -26,10 +28,12 @@
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "method-override": "^3.0.0",
     "pg": "^8.5.1",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "socket.io": "^4.3.2"
   }
 }
