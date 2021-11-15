@@ -6,7 +6,7 @@ import methodOverride from 'method-override';
 import { Server } from 'socket.io';
 
 import cors from 'cors';
-import bindRoutes from './routes.mjs';
+// import bindRoutes from './routes.mjs';
 
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 const app = express();
