@@ -1,5 +1,5 @@
 {
-  "name": "base-mvc-swe1",
+  "name": "blobfish-app-backend",
   "version": "1.0.0",
   "description": "",
   "main": ".eslintrc.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rocketacademy/base-mvc-swe1.git"
+    "url": "git+https://github.com/Ennnm/blobfish-app-backend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rocketacademy/base-mvc-swe1/issues"
+    "url": "https://github.com/Ennnm/blobfish-app-backend/issues"
   },
-  "homepage": "https://github.com/rocketacademy/base-mvc-swe1#readme",
+  "homepage": "https://github.com/Ennnm/blobfish-app-backend.git#readme",
   "devDependencies": {
     "eslint": "^7.15.0",
     "eslint-config-airbnb-base": "^14.2.1",
