@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
     io.to(data.to).emit('callAccepted', data.signal);
   });
 });
-app.listen(PORT);
-// server.listen(PORT, () => {
-//   console.log(`${PORT} is on`);
-// });
+
+server.listen(PORT, () => {
+  console.log(`${PORT} is on`);
+});
