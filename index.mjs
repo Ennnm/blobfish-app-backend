@@ -22,8 +22,9 @@ const io = new Server(server, {
 app.use(cors());
 
 const PORT = process.env.PORT || 3002;
-
+console.log('pls work111!!!');
 app.get('/', (req, res) => {
+  console.log('pls work2222!!!');
   res.send('running');
 });
 
