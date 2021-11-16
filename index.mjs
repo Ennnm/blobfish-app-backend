@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
     io.to(userToCall).emit('callUser', { signal: signalData, from, name });
   });
 
-  socket.in('answerCall', (data) => {
+  socket.on('answerCall', (data) => {
     io.to(data.to).emit('callAccepted', data.signal);
   });
 });
