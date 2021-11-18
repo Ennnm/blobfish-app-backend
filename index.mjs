@@ -22,28 +22,50 @@ const io = new Server(server, {
 app.use(cors());
 
 const PORT = process.env.PORT || 3002;
-console.log('pls work111!!!');
 app.get('/', (req, res) => {
-  console.log('pls work2222!!!');
   res.send('running');
 });
+const users = {};
+const socketToRoom = {};
 
 io.on('connection', (socket) => {
   console.log('client connected', socket.id);
+  socket.on('joined room', (roomID) => {
+    if (users[roomID]) {
+      const { length } = users[roomID];
+      if (length === 4) {
+        socket.emit('room full');
+        return;
+      }
+      users[roomID].push(socket.id);
+    } else {
+      users[roomID] = [socket.id];
+    }
+    socketToRoom[socket.id] = roomID;
+    const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
+    console.log(usersInThisRoom);
+    socket.emit('get users', usersInThisRoom);
+  });
 
-  socket.emit('me', socket.id);
+  socket.on('sending signal', (payload) => {
+    io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
+  });
+
+  socket.on('returning signal', (payload) => {
+    io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
+  });
+
+  socket.on('answer', (data) => {
+    io.to(data.target).emit('answer', data);
+  });
+
   socket.on('disconnect', () => {
-    socket.broadcast.emit('disconnected');
-  });
-
-  socket.on('callUser', ({
-    userToCall, signalData, from, name,
-  }) => {
-    io.to(userToCall).emit('callUser', { signal: signalData, from, name });
-  });
-
-  socket.on('answerCall', (data) => {
-    io.to(data.to).emit('callAccepted', data.signal);
+    const roomID = socketToRoom[socket.id];
+    let room = users[roomID];
+    if (room) {
+      room = room.filter((id) => id !== socket.id);
+      users[roomID] = room;
+    }
   });
 });
 
