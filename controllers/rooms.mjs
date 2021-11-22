@@ -8,7 +8,11 @@ export default function initRoomsController(db) {
     }
   };
 
+  const create = async (request, response) => {};
+  const show = async (request, response) => {};
   return {
     index,
+    create,
+    show,
   };
 }

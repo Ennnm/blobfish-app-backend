@@ -32,11 +32,10 @@ export default function initLoginController(db) {
 
       // set the loggedIn and userId cookies in the response
       // The user's password hash matches that in the DB and we authenticate the user.
-      response.cookie('loggedIn', hashedCookieString);
-      response.cookie('userId', user.id);
       const successMessage = 'Login success!';
       response.send({
         id: user.id,
+        hashedId: hashedCookieString,
         message: successMessage,
         username: user.username,
       });

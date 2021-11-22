@@ -7,8 +7,9 @@ export default function initUsersController(db) {
       console.log(error);
     }
   };
-
+  const show = async (request, response) => {};
   return {
     index,
+    show,
   };
 }

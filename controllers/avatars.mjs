@@ -7,8 +7,11 @@ export default function initAvatarsController(db) {
       console.log(error);
     }
   };
-
+  const create = async (request, response) => {};
+  const show = async (request, response) => {};
   return {
     index,
+    create,
+    show,
   };
 }

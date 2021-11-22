@@ -13,7 +13,7 @@ export default function initSignupController(db) {
       }
       // get the hashed password as output from the SHA object
       const hashedPassword = util.getHash(validatedUserInfo.password);
-      const { username, profileImg, description } = validatedUserInfo;
+      const { username } = validatedUserInfo;
       const user = await db.User.findOne({
         where: {
           username,
@@ -27,10 +27,12 @@ export default function initSignupController(db) {
         username,
         password: hashedPassword,
       });
+      const hashedId = util.getHash(newUser.id);
 
       const successMessage = 'You have registered successfully! Please log in.';
       response.send({
         id: newUser.id,
+        hashedId,
         message: successMessage,
         username: newUser.username,
       });
