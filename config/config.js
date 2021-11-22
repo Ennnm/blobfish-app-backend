@@ -1,8 +1,8 @@
 module.exports = {
   development: {
-    username: '<YOUR_USER_NAME>',
+    username: 'en',
     password: null,
-    database: '<YOUR_DATABASE_NAME>',
+    database: 'blobfish_development',
     host: '127.0.0.1',
     dialect: 'postgres',
   },
