@@ -8,7 +8,7 @@ export default function roomModel(sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      creator_id: {
+      userId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
