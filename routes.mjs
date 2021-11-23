@@ -22,6 +22,7 @@ export default function bindRoutes(app) {
   app.get('/rooms', RoomController.index);
   app.post('/rooms', RoomController.create);
   app.get('/rooms/:id', RoomController.show);
+  app.delete('/rooms/:id', RoomController.destroy);
 
   const UserController = initUsersController(db);
   const LoginController = initLoginController(db);
