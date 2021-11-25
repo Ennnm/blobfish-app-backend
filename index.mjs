@@ -6,6 +6,7 @@ import methodOverride from 'method-override';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import bindRoutes from './routes.mjs';
+import registerRoomHandlers from './registerRoomHandlers.mjs';
 
 // import bindRoutes from './routes.mjs';
 
@@ -26,8 +27,6 @@ const PORT = process.env.PORT || 3002;
 app.get('/', (req, res) => {
   res.send('running');
 });
-const users = {};
-const socketToRoom = {};
 
 // Set the Express view engine to expect EJS templates
 app.set('view engine', 'ejs');
@@ -45,46 +44,13 @@ app.use(express.static('public'));
 // Bind route definitions to the Express application
 bindRoutes(app);
 
-io.on('connection', (socket) => {
+const onConnection = (socket) => {
   console.log('client connected', socket.id);
-  socket.on('joined room', (roomID) => {
-    if (users[roomID]) {
-      const { length } = users[roomID];
-      if (length === 4) {
-        socket.emit('room full');
-        return;
-      }
-      users[roomID].push(socket.id);
-    } else {
-      users[roomID] = [socket.id];
-    }
-    socketToRoom[socket.id] = roomID;
-    const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
-    console.log(usersInThisRoom);
-    socket.emit('get users', usersInThisRoom);
-  });
 
-  socket.on('sending signal', (payload) => {
-    io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
-  });
+  registerRoomHandlers(io, socket);
+};
 
-  socket.on('returning signal', (payload) => {
-    io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
-  });
-
-  socket.on('answer', (data) => {
-    io.to(data.target).emit('answer', data);
-  });
-
-  socket.on('disconnect', () => {
-    const roomID = socketToRoom[socket.id];
-    let room = users[roomID];
-    if (room) {
-      room = room.filter((id) => id !== socket.id);
-      users[roomID] = room;
-    }
-  });
-});
+io.on('connection', onConnection);
 
 server.listen(PORT, () => {
   console.log(`${PORT} is on`);
