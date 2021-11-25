@@ -17,6 +17,7 @@ export default function bindRoutes(app) {
   app.get('/avatars', AvatarController.index);
   app.post('/avatars', AvatarController.create);
   app.get('/avatars/:id', AvatarController.show);
+  app.post('/displayAvatar', AvatarController.displayAvatar);
 
   const RoomController = initRoomsController(db);
   app.get('/rooms', RoomController.index);

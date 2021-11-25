@@ -5,12 +5,15 @@ import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 import bindRoutes from './routes.mjs';
 
 // import bindRoutes from './routes.mjs';
 
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 const app = express();
+const jsonParser = bodyParser.json();
+app.use(jsonParser);
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
