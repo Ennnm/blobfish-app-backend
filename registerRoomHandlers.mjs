@@ -1,7 +1,7 @@
 const users = {};
 const socketToRoom = {};
 export default function registerRoomHandlers(io, socket) {
-  console.log('in registerRoom handlers');
+  // console.log('in registerRoom handlers');
 
   socket.onAny((eventName, ...args) => {
     console.log('socket eventName :>> ', eventName);
@@ -18,6 +18,7 @@ export default function registerRoomHandlers(io, socket) {
     } else {
       users[roomID] = [socket.id];
     }
+    // place user in room, user can only be in one room at a time
     socketToRoom[socket.id] = roomID;
     const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
     console.log('usersInThisRoom :>> ', usersInThisRoom);
@@ -26,6 +27,7 @@ export default function registerRoomHandlers(io, socket) {
 
   const sendSignalOnJoin = (payload) => {
     io.to(payload.userToSignal).emit('user joined', {
+      username: payload.username,
       signal: payload.signal,
       callerID: payload.callerID,
     });
@@ -34,6 +36,7 @@ export default function registerRoomHandlers(io, socket) {
 
   const returnSignal = (payload) => {
     io.to(payload.callerID).emit('receiving returned signal', {
+      username: payload.username,
       signal: payload.signal,
       id: socket.id,
     });
@@ -45,15 +48,22 @@ export default function registerRoomHandlers(io, socket) {
     console.log('answer data :>> ', data);
   };
 
-  const disconnectUser = () => {
+  const disconnectingUser = () => {
     const roomID = socketToRoom[socket.id];
     let room = users[roomID];
     if (room) {
       room = room.filter((id) => id !== socket.id);
       users[roomID] = room;
+      socket.emit('get users', users[roomID]);
     }
     console.log('disconnect user socket.id :>> ', socket.id);
+    // transmit to all other users to remove local from their users list
   };
+
+  // const disconnectingUser =()=>{
+  //   // get socket user
+  //   const roomId = socketToRoom(socket.id);
+  // }
   socket.on('joined room', joinRoom);
 
   socket.on('sending signal', sendSignalOnJoin);
@@ -62,5 +72,6 @@ export default function registerRoomHandlers(io, socket) {
 
   socket.on('answer', answer);
 
-  socket.on('disconnect', disconnectUser);
+  socket.on('disconnecting', disconnectingUser);
+  // socket.on('disconnecting', disconnectingUser);
 }
