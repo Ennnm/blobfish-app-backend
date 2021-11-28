@@ -7,20 +7,24 @@ export default function registerRoomHandlers(io, socket) {
     console.log('socket eventName :>> ', eventName);
     console.log('args :>> ', args);
   });
-  const joinRoom = (roomID) => {
+  const joinRoom = ({ roomID, username }) => {
     if (users[roomID]) {
       const { length } = users[roomID];
       if (length === 4) {
         socket.emit('room full');
         return;
       }
-      users[roomID].push(socket.id);
+      users[roomID].push({ userID: socket.id, username });
     } else {
-      users[roomID] = [socket.id];
+      users[roomID] = [{ userID: socket.id, username }];
     }
     // place user in room, user can only be in one room at a time
-    socketToRoom[socket.id] = roomID;
-    const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
+
+    socketToRoom[socket.id] = { roomID, username };
+    const usersInThisRoom = users[roomID].filter(
+      (user) => user.userID !== socket.id
+    );
+
     console.log('usersInThisRoom :>> ', usersInThisRoom);
     socket.emit('get users', usersInThisRoom);
   };
@@ -71,6 +75,9 @@ export default function registerRoomHandlers(io, socket) {
   socket.on('returning signal', returnSignal);
 
   socket.on('answer', answer);
+
+
+  socket.on('disconnect', disconnectingUser);
 
   socket.on('disconnecting', disconnectingUser);
   // socket.on('disconnecting', disconnectingUser);
