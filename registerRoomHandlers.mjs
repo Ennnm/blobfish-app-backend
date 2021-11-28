@@ -19,15 +19,12 @@ export default function registerRoomHandlers(io, socket) {
       users[roomID] = [{ userID: socket.id, username }];
     }
     // place user in room, user can only be in one room at a time
-<<<<<<< HEAD
+
     socketToRoom[socket.id] = { roomID, username };
     const usersInThisRoom = users[roomID].filter(
       (user) => user.userID !== socket.id
     );
-=======
-    socketToRoom[socket.id] = roomID;
-    const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
->>>>>>> 80c7ba621e27862232a3a3522bcd5d152ebf29b8
+
     console.log('usersInThisRoom :>> ', usersInThisRoom);
     socket.emit('get users', usersInThisRoom);
   };
@@ -79,10 +76,9 @@ export default function registerRoomHandlers(io, socket) {
 
   socket.on('answer', answer);
 
-<<<<<<< HEAD
+
   socket.on('disconnect', disconnectingUser);
-=======
->>>>>>> 80c7ba621e27862232a3a3522bcd5d152ebf29b8
+
   socket.on('disconnecting', disconnectingUser);
   // socket.on('disconnecting', disconnectingUser);
 }
