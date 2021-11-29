@@ -1,27 +1,27 @@
-const users = {};
+const rooms = {};
 const socketToRoom = {};
 export default function registerRoomHandlers(io, socket) {
   // console.log('in registerRoom handlers');
 
-  socket.onAny((eventName, ...args) => {
-    console.log('socket eventName :>> ', eventName);
-    console.log('args :>> ', args);
-  });
+  // socket.onAny((eventName, ...args) => {
+  //   console.log('socket eventName :>> ', eventName);
+  //   console.log('args :>> ', args);
+  // });
   const joinRoom = ({ roomID, username, avatarJSON, coordinates }) => {
-    if (users[roomID]) {
-      const { length } = users[roomID];
+    if (rooms[roomID]) {
+      const { length } = rooms[roomID];
       if (length === 30) {
         socket.emit('room full');
         return;
       }
-      users[roomID].push({
+      rooms[roomID].push({
         userID: socket.id,
         username,
         avatarJSON,
         coordinates,
       });
     } else {
-      users[roomID] = [
+      rooms[roomID] = [
         {
           userID: socket.id,
           username,
@@ -31,18 +31,10 @@ export default function registerRoomHandlers(io, socket) {
       ];
     }
     // place user in room, user can only be in one room at a time
-<<<<<<< HEAD
-=======
-
->>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
     socketToRoom[socket.id] = { roomID, username };
-    const usersInThisRoom = users[roomID].filter(
+    const usersInThisRoom = rooms[roomID].filter(
       (user) => user.userID !== socket.id
     );
-<<<<<<< HEAD
-=======
-
->>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
     console.log('usersInThisRoom :>> ', usersInThisRoom);
     socket.emit('get users', usersInThisRoom);
   };
@@ -73,15 +65,30 @@ export default function registerRoomHandlers(io, socket) {
   };
 
   const disconnectingUser = () => {
-    const roomID = socketToRoom[socket.id];
-    let room = users[roomID];
-    if (room) {
-      room = room.filter((id) => id !== socket.id);
-      users[roomID] = room;
-      socket.emit('get users', users[roomID]);
+    if (socketToRoom !== undefined && socketToRoom[socket.id] !== undefined) {
+      const { roomID } = socketToRoom[socket.id];
+      console.log('socketToRoom :>> ', socketToRoom);
+      let room = rooms[roomID];
+      // need to get room id
+      console.log('rooms :>> ', rooms);
+      // let disconnectUserIdx = rooms[roomID].indexOf();
+      let disconnectUser;
+      if (room) {
+        disconnectUser = room.filter((user) => user.userID === socket.id);
+        room = room.filter((user) => user.userId !== socket.id);
+        console.log('room :>> ', room);
+        rooms[roomID] = room;
+        // socket.emit('get users', rooms[roomID]);
+      }
+      console.log('rooms[roomID] :>> ', rooms[roomID]);
+      console.log('socket.id :>> ', socket.id);
+      console.log('disconnectUser :>> ', disconnectUser);
+      io.sockets.emit('disconnect user', disconnectUser);
+      console.log('disconnect user socket.id :>> ', socket.id);
+      // transmit to all other users to remove local from their users list
+
+      // on disconnect, send username, socket id to remove
     }
-    console.log('disconnect user socket.id :>> ', socket.id);
-    // transmit to all other users to remove local from their users list
   };
 
   // const disconnectingUser =()=>{
@@ -96,13 +103,7 @@ export default function registerRoomHandlers(io, socket) {
 
   socket.on('answer', answer);
 
-<<<<<<< HEAD
-  socket.on('disconnect', disconnectingUser);
-=======
-
-  socket.on('disconnect', disconnectingUser);
-
->>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
+  // socket.on('disconnect', disconnectingUser);
   socket.on('disconnecting', disconnectingUser);
   // socket.on('disconnecting', disconnectingUser);
 }
