@@ -31,18 +31,10 @@ export default function registerRoomHandlers(io, socket) {
       ];
     }
     // place user in room, user can only be in one room at a time
-<<<<<<< HEAD
-=======
-
->>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
     socketToRoom[socket.id] = { roomID, username };
     const usersInThisRoom = users[roomID].filter(
       (user) => user.userID !== socket.id
     );
-<<<<<<< HEAD
-=======
-
->>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
     console.log('usersInThisRoom :>> ', usersInThisRoom);
     socket.emit('get users', usersInThisRoom);
   };
@@ -82,6 +74,8 @@ export default function registerRoomHandlers(io, socket) {
     }
     console.log('disconnect user socket.id :>> ', socket.id);
     // transmit to all other users to remove local from their users list
+
+    // on disconnect, send username, socket id to remove
   };
 
   // const disconnectingUser =()=>{
@@ -96,13 +90,7 @@ export default function registerRoomHandlers(io, socket) {
 
   socket.on('answer', answer);
 
-<<<<<<< HEAD
   socket.on('disconnect', disconnectingUser);
-=======
-
-  socket.on('disconnect', disconnectingUser);
-
->>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
   socket.on('disconnecting', disconnectingUser);
   // socket.on('disconnecting', disconnectingUser);
 }
