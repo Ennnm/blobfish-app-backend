@@ -49,9 +49,28 @@ export default function registerRoomHandlers(io, socket) {
     });
     console.log('send signal payload :>> ', payload);
   };
+  const sendDataSignalOnJoin = (payload) => {
+    io.to(payload.userToSignal).emit('user data joined', {
+      avatarJSON: payload.avatarJSON,
+      username: payload.username,
+      coordinates: payload.coordinates,
+      signal: payload.signal,
+      callerID: payload.callerID,
+    });
+    console.log('send data signal payload :>> ', payload);
+  };
 
   const returnSignal = (payload) => {
     io.to(payload.callerID).emit('receiving returned signal', {
+      // username: payload.username,
+      signal: payload.signal,
+      id: socket.id,
+    });
+    console.log('received signal payload :>> ', payload);
+  };
+
+  const returnDataSignal = (payload) => {
+    io.to(payload.callerID).emit('receiving data returned signal', {
       // username: payload.username,
       signal: payload.signal,
       id: socket.id,
@@ -98,8 +117,10 @@ export default function registerRoomHandlers(io, socket) {
   socket.on('joined room', joinRoom);
 
   socket.on('sending signal', sendSignalOnJoin);
+  socket.on('sending data signal', sendDataSignalOnJoin);
 
   socket.on('returning signal', returnSignal);
+  socket.on('returning data signal', returnDataSignal);
 
   socket.on('answer', answer);
 
