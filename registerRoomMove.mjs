@@ -83,7 +83,7 @@ export default function registerRoomMove(io, socket) {
       console.log('rooms[roomID] :>> ', rooms[roomID]);
       console.log('socket.id :>> ', socket.id);
       console.log('disconnectUser :>> ', disconnectUser);
-      io.sockets.emit('disconnect user', disconnectUser);
+      io.sockets.emit('disconnect data user', disconnectUser);
       console.log('disconnect user socket.id :>> ', socket.id);
       // transmit to all other users to remove local from their users list
 
