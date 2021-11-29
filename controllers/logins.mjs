@@ -12,10 +12,11 @@ export default function initLoginController(db) {
         throw new Error(globals.INVALID_LOGIN_REQUEST_MESSAGE);
       }
 
-      const { username } = validatedLogin;
+      const { username, password } = validatedLogin;
       const user = await db.User.findOne({
         where: {
           username,
+          password,
         },
       });
 
@@ -42,11 +43,9 @@ export default function initLoginController(db) {
     } catch (error) {
       let errorMessage = '';
       if (error.message === globals.LOGIN_FAILED_ERROR_MESSAGE) {
-        errorMessage =
-          'There has been an error. Please ensure that you have the correct username or password.';
+        errorMessage = 'There has been an error. Please ensure that you have the correct username or password.';
       } else if (error.message === globals.INVALID_LOGIN_REQUEST_MESSAGE) {
-        errorMessage =
-          'There has been an error. Login input validation failed!';
+        errorMessage = 'There has been an error. Login input validation failed!';
       } else {
         errorMessage = error.message;
       }

@@ -1,6 +1,6 @@
 module.exports = {
   development: {
-    username: 'en',
+    username: 'justin',
     password: null,
     database: 'blobfish_development',
     host: '127.0.0.1',
