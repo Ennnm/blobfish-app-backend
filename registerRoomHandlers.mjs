@@ -7,31 +7,51 @@ export default function registerRoomHandlers(io, socket) {
     console.log('socket eventName :>> ', eventName);
     console.log('args :>> ', args);
   });
-  const joinRoom = ({ roomID, username }) => {
+  const joinRoom = ({ roomID, username, avatarJSON, coordinates }) => {
     if (users[roomID]) {
       const { length } = users[roomID];
-      if (length === 4) {
+      if (length === 30) {
         socket.emit('room full');
         return;
       }
-      users[roomID].push({ userID: socket.id, username });
+      users[roomID].push({
+        userID: socket.id,
+        username,
+        avatarJSON,
+        coordinates,
+      });
     } else {
-      users[roomID] = [{ userID: socket.id, username }];
+      users[roomID] = [
+        {
+          userID: socket.id,
+          username,
+          avatarJSON,
+          coordinates,
+        },
+      ];
     }
     // place user in room, user can only be in one room at a time
+<<<<<<< HEAD
+=======
 
+>>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
     socketToRoom[socket.id] = { roomID, username };
     const usersInThisRoom = users[roomID].filter(
       (user) => user.userID !== socket.id
     );
+<<<<<<< HEAD
+=======
 
+>>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
     console.log('usersInThisRoom :>> ', usersInThisRoom);
     socket.emit('get users', usersInThisRoom);
   };
 
   const sendSignalOnJoin = (payload) => {
     io.to(payload.userToSignal).emit('user joined', {
+      avatarJSON: payload.avatarJSON,
       username: payload.username,
+      coordinates: payload.coordinates,
       signal: payload.signal,
       callerID: payload.callerID,
     });
@@ -40,13 +60,13 @@ export default function registerRoomHandlers(io, socket) {
 
   const returnSignal = (payload) => {
     io.to(payload.callerID).emit('receiving returned signal', {
-      username: payload.username,
+      // username: payload.username,
       signal: payload.signal,
       id: socket.id,
     });
     console.log('received signal payload :>> ', payload);
   };
-
+  // needed? for verification?
   const answer = (data) => {
     io.to(data.target).emit('answer', data);
     console.log('answer data :>> ', data);
@@ -76,9 +96,13 @@ export default function registerRoomHandlers(io, socket) {
 
   socket.on('answer', answer);
 
+<<<<<<< HEAD
+  socket.on('disconnect', disconnectingUser);
+=======
 
   socket.on('disconnect', disconnectingUser);
 
+>>>>>>> bda57caed259f3c73d1129226e756ba95120d9b2
   socket.on('disconnecting', disconnectingUser);
   // socket.on('disconnecting', disconnectingUser);
 }
