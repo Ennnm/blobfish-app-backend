@@ -7,7 +7,8 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import bindRoutes from './routes.mjs';
-import registerRoomHandlers from './registerRoomHandlers.mjs';
+import registerRoomAudio from './registerRoomAudio.mjs';
+import registerRoomMove from './registerRoomMove.mjs';
 
 // import bindRoutes from './routes.mjs';
 
@@ -50,7 +51,8 @@ bindRoutes(app);
 const onConnection = (socket) => {
   console.log('client connected', socket.id);
 
-  registerRoomHandlers(io, socket);
+  registerRoomAudio(io, socket);
+  registerRoomMove(io, socket);
 };
 
 io.on('connection', onConnection);

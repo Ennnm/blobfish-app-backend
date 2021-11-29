@@ -1,13 +1,13 @@
 const rooms = {};
 const socketToRoom = {};
-export default function registerRoomHandlers(io, socket) {
+export default function registerRoomMove(io, socket) {
   // console.log('in registerRoom handlers');
 
   // socket.onAny((eventName, ...args) => {
   //   console.log('socket eventName :>> ', eventName);
   //   console.log('args :>> ', args);
   // });
-  const joinRoom = ({ roomID, username, avatarJSON, coordinates }) => {
+  const joinDataRoom = ({ roomID, username, avatarJSON, coordinates }) => {
     if (rooms[roomID]) {
       const { length } = rooms[roomID];
       if (length === 30) {
@@ -36,19 +36,9 @@ export default function registerRoomHandlers(io, socket) {
       (user) => user.userID !== socket.id
     );
     console.log('usersInThisRoom :>> ', usersInThisRoom);
-    socket.emit('get users', usersInThisRoom);
+    socket.emit('get data users', usersInThisRoom);
   };
 
-  const sendSignalOnJoin = (payload) => {
-    io.to(payload.userToSignal).emit('user joined', {
-      avatarJSON: payload.avatarJSON,
-      username: payload.username,
-      coordinates: payload.coordinates,
-      signal: payload.signal,
-      callerID: payload.callerID,
-    });
-    console.log('send signal payload :>> ', payload);
-  };
   const sendDataSignalOnJoin = (payload) => {
     io.to(payload.userToSignal).emit('user data joined', {
       avatarJSON: payload.avatarJSON,
@@ -58,15 +48,6 @@ export default function registerRoomHandlers(io, socket) {
       callerID: payload.callerID,
     });
     console.log('send data signal payload :>> ', payload);
-  };
-
-  const returnSignal = (payload) => {
-    io.to(payload.callerID).emit('receiving returned signal', {
-      // username: payload.username,
-      signal: payload.signal,
-      id: socket.id,
-    });
-    console.log('received signal payload :>> ', payload);
   };
 
   const returnDataSignal = (payload) => {
@@ -114,12 +95,10 @@ export default function registerRoomHandlers(io, socket) {
   //   // get socket user
   //   const roomId = socketToRoom(socket.id);
   // }
-  socket.on('joined room', joinRoom);
+  socket.on('joined data room', joinDataRoom);
 
-  socket.on('sending signal', sendSignalOnJoin);
   socket.on('sending data signal', sendDataSignalOnJoin);
 
-  socket.on('returning signal', returnSignal);
   socket.on('returning data signal', returnDataSignal);
 
   socket.on('answer', answer);
