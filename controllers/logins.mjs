@@ -13,13 +13,13 @@ export default function initLoginController(db) {
       }
 
       const { username, password } = validatedLogin;
+      const hashedPassword = util.getHash(password);
       const user = await db.User.findOne({
         where: {
           username,
-          password,
+          password: hashedPassword,
         },
       });
-
       if (!user) {
         // we didnt find a user with that email.
         // the error for password and user are the same.

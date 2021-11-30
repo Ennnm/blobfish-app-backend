@@ -8,14 +8,13 @@ const validateUserName = (userInfo, type) => {
       obj.username_invalid = 'Please enter a valid username.';
     }
   } else if (userInfo.username.length < 1 || userInfo.username.length > 30) {
-    obj.username_invalid =
-      'Your username should only be 1 to 30 characters long.';
+    obj.username_invalid = 'Your username should only be 1 to 30 characters long.';
   } else if (userInfo.username.search(regex) === -1) {
     if (type === 'signup') {
-      obj.username_invalid =
-        'Your username should only include numbers, lowercase alphabets, and/or underscores.';
+      obj.username_invalid = 'Your username should only include numbers, lowercase alphabets, and/or underscores.';
     }
   }
+  console.log(obj);
   return obj;
 };
 
@@ -28,13 +27,12 @@ const validatePassword = (userInfo, type) => {
   }
 
   if (
-    !userInfo.password ||
-    userInfo.password.trim === '' ||
-    userInfo.password.length < 8
+    !userInfo.password
+    || userInfo.password.trim === ''
+    || userInfo.password.length < 8
   ) {
     if (type === 'signup') {
-      obj.password_invalid =
-        'Please enter a valid password of at least 8 characters long.';
+      obj.password_invalid = 'Please enter a valid password of at least 8 characters long.';
     }
   }
   return obj;
