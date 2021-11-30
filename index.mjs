@@ -32,6 +32,11 @@ app.get('/', (req, res) => {
   res.send('running');
 });
 
+app.get('/cors', (req, res) => {
+  res.set('Access-Control-Allow-Origin', 'https://sleepy-plateau-69754.herokuapp.com/');
+  res.send({ msg: 'This has CORS enabled 🎈' });
+});
+
 // Set the Express view engine to expect EJS templates
 app.set('view engine', 'ejs');
 // Bind cookie parser middleware to parse cookies in requests
