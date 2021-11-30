@@ -19,7 +19,7 @@ app.use(jsonParser);
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: FRONTEND_URL,
+    // origin: FRONTEND_URL,
     methods: ['GET', 'POST', 'HEAD'],
     credentials: true,
   },
@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/cors', (req, res) => {
-  res.set('Access-Control-Allow-Origin', 'https://sleepy-plateau-69754.herokuapp.com/');
+  res.set('Access-Control-Allow-Origin', 'https://blobfish-app.netlify.app');
   res.send({ msg: 'This has CORS enabled 🎈' });
 });
 
