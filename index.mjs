@@ -12,7 +12,7 @@ import registerRoomMove from './registerRoomMove.mjs';
 
 // import bindRoutes from './routes.mjs';
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://blobfish-app.netlify.app';
 const app = express();
 const jsonParser = bodyParser.json();
 app.use(jsonParser);
