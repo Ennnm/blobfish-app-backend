@@ -8,5 +8,11 @@ module.exports = {
   },
   production: {
     dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+
   },
 };
