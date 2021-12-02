@@ -7,6 +7,6 @@ module.exports = {
     dialect: 'postgres',
   },
   production: {
-
+    dialect: 'postgres',
   },
 };
