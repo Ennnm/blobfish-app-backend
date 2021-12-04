@@ -12,6 +12,7 @@ import registerRoomMove from './registerRoomMove.mjs';
 
 // import bindRoutes from './routes.mjs';
 
+// const FRONTEND_URL = 'http://localhost:3000';
 const FRONTEND_URL = 'https://blobfish-app.netlify.app';
 const app = express();
 const jsonParser = bodyParser.json();
@@ -25,10 +26,12 @@ const io = new Server(server, {
   },
 });
 
-app.use(cors({
-  credentials: true,
-  origin: FRONTEND_URL,
-}));
+app.use(
+  cors({
+    credentials: true,
+    origin: FRONTEND_URL,
+  })
+);
 
 const PORT = process.env.PORT || 3002;
 app.get('/', (req, res) => {
